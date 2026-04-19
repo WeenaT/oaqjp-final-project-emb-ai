@@ -13,6 +13,9 @@ app = Flask("Emotion Detector")
 
 @app.route("/")
 def render_index_page():
+    '''
+    Render the home page.
+    '''
     return render_template("index.html")
 
 @app.route("/emotionDetector")
@@ -34,7 +37,7 @@ def emotion_detector_route():
     fear = response["fear"]
     joy = response["joy"]
     sadness = response["sadness"]
-    dominant_emotion = response["dominant_emotion"]  
+    dominant_emotion = response["dominant_emotion"]
 
     # Incorporate error handling when dominant emotion is None
     if dominant_emotion is None:
