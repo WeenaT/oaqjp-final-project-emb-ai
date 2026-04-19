@@ -25,9 +25,6 @@ def emotion_detector_route():
     # Retrive the text to analyze from the request arguments
     text_to_analyze = request.args.get("textToAnalyze")
 
-    if not text_to_analyze:
-        return "Invalid input! Try again."
-
     # Pass the text to the sentiment_analyzer function
     response = emotion_detector(text_to_analyze)
 
@@ -39,6 +36,9 @@ def emotion_detector_route():
     sadness = response["sadness"]
     dominant_emotion = response["dominant_emotion"]  
 
+    # Incorporate error handling when dominant emotion is None
+    if dominant_emotion is None:
+        return "Invalid text! Please try again!"
 
     # Return formatted response
     return (

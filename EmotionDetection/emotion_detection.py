@@ -1,4 +1,4 @@
-# Task 3: Task 3: Format the output of the application
+# Task 7: Incorporate Error handling
 
 import requests  # Import the requests library to handle HTTP requests
 import json
@@ -23,10 +23,20 @@ def emotion_detector(text_to_analyze):
     # Send a POST request to the API
     response = requests.post(url, json=myobj, headers=header)
    
-    # 1. Convert JSON text to dictionary
+    if response.status_code == 400:
+        return {
+            "anger": None,
+            "disgust": None,
+            "fear": None,
+            "joy": None,
+            "sadness": None,
+            "dominant_emotion": None 
+        }
+
+    # Convert JSON text to dictionary
     formatted_response = json.loads(response.text)
 
-    # 2. Extract emotion scores
+    # Extract emotion scores
     emotions = formatted_response["emotionPredictions"][0]["emotion"]
 
     anger = emotions["anger"]
@@ -35,7 +45,7 @@ def emotion_detector(text_to_analyze):
     joy = emotions["joy"]
     sadness = emotions["sadness"]
 
-    # 3. Determine dominant emotion
+    # Determine dominant emotion
     emotion_scores = {
         "anger": anger,
         "disgust": disgust,
@@ -46,7 +56,7 @@ def emotion_detector(text_to_analyze):
 
     dominant_emotion = max(emotion_scores, key=emotion_scores.get)
 
-    #4. Return required format
+    # Return required format
     return {
         "anger": anger,
         "disgust": disgust,
@@ -55,10 +65,3 @@ def emotion_detector(text_to_analyze):
         "sadness": sadness,
         "dominant_emotion": dominant_emotion
     }
-
-    # Return formatted response
-    return {
-        "dominant_emotion": dominant_emotion,
-        "score": score
-    }
-
